@@ -5,6 +5,9 @@ provider:
   runtime: nodejs12.x
   environment:
     NODE_ENV: dev
+    # DB_URL: ${DB_URL}
+    # DB_NAME: ${DB_NAME}
+    # DB_BOOKS_COLLECTION: ${DB_BOOKS_COLLECTION}
 
 plugins:
   - serverless-plugin-typescript 
@@ -18,34 +21,40 @@ package:
     - config/.env.dev
 
 functions:
-  create:
-    handler: app/handler.create
+  # create:
+  #   handler: app/handler.create
+  #   events:
+  #     - http:
+  #         path: books
+  #         method: post
+  # update:
+  #   handler: app/handler.update
+  #   events:
+  #     - http:
+  #         path: books/{id}
+  #         method: put
+  # findOne:
+  #   handler: app/handler.findOne
+  #   events:
+  #     - http:
+  #         path: books/{id}
+  #         method: get
+
+  # deleteOne:
+  #   handler: app/handler.deleteOne
+  #   events:
+  #     - http:
+  #         path: books/{id}
+  #         method: delete
+  hello:
+    handler: app/handler.hello
     events:
       - http:
-          path: books
-          method: post
-  update:
-    handler: app/handler.update
-    events:
-      - http:
-          path: books/{id}
-          method: put
+          path: hello
+          method: get
   find:
     handler: app/handler.find
     events:
       - http:
-          path: books
+          path: vaults
           method: get
-  findOne:
-    handler: app/handler.findOne
-    events:
-      - http:
-          path: books/{id}
-          method: get
-
-  deleteOne:
-    handler: app/handler.deleteOne
-    events:
-      - http:
-          path: books/{id}
-          method: delete

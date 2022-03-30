@@ -106,4 +106,22 @@ export class BooksController extends BooksService {
       return MessageUtil.error(err.code, err.message);
     }
   }
+
+  /**
+   * hello
+   * @param event
+   */
+   async hello () {
+    // const id: number = event.pathParameters.id;
+    try {
+      const result = await this.helloByNothing();
+      return MessageUtil.success(result);
+    } catch (err) {
+      console.error(err);
+
+      return MessageUtil.error(err.code, err.message);
+    }
+  }
 }
+
+  

@@ -61,4 +61,15 @@ export class BooksService {
   protected deleteOneBookById (id: number) {
     return this.books.deleteOne({ id });
   }
-}
+
+
+   /**
+   * Returns hello
+   * @param id
+   */
+    protected helloByNothing () {
+      return {
+        msg: `hello`
+      };
+    }
+  }
