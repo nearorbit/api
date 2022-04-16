@@ -6,19 +6,18 @@ const dotenvPath = path.join(__dirname, '../', `config/.env.${process.env.NODE_E
 dotenv.config({
   path: dotenvPath,
 });
-import { baseModel } from './model';
 import { VaultsController } from './controller/vaults';
-const vaultsController = new VaultsController(baseModel)
+const vaultsController = new VaultsController()
 
 
 
-export const findVaults: Handler = () => vaultsController.updateVaults();
+export const findVaults: Handler = () => vaultsController.findVaults();
 export const findOneVault: Handler = () => vaultsController.test();
 
 export const findPools: Handler = () => vaultsController.test();
 export const findOnePool: Handler = () => vaultsController.test();
 
-export const updateVaults: Handler = () => vaultsController.test();
+export const updateVaults: Handler = () => vaultsController.updateVaults();
 export const updatePools: Handler = () => vaultsController.test();
 
 

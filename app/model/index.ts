@@ -1,3 +1,3 @@
-export * from './mongoose-db';
 export * from './vaults';
+export * from './decorator';
 

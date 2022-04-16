@@ -21,11 +21,17 @@ package:
     - config/.env.dev
 
 functions:
-  find:
+  findVaults:
     handler: app/handler.findVaults
     events:
       - http:
           path: vaults
+          method: get
+  updateVaults:
+    handler: app/handler.updateVaults
+    events:
+      - http:
+          path: update/vaults
           method: get
   # create:
   #   handler: app/handler.create

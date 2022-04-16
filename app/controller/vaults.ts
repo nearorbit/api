@@ -1,19 +1,14 @@
-import { Context } from 'aws-lambda';
-import { Model } from 'mongoose';
+
 import { MessageUtil } from '../utils/message';
 import { VaultsService } from '../service/vaults';
 
 export class VaultsController extends VaultsService {
-  constructor(vaults: Model<any>) {
-    super(vaults)
-  }
-
   /**
-  * Test
+  * Find vaults
   */
-  async test() {
+  async findVaults() {
     try {
-      const result = { state: true }
+      const result = await this.findAllVaults()
       return MessageUtil.success(result);
     } catch (err) {
       console.error(err);
@@ -22,6 +17,9 @@ export class VaultsController extends VaultsService {
     }
   }
 
+  /**
+  * Update all vaults
+  */
   async updateVaults() {
     try {
       const result = await this.updateAllVaults()

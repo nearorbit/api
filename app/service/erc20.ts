@@ -36,11 +36,11 @@ export class ERC20Service {
         return allowance.gte(BigNumber.from('0xffffffffffffffffffffffff')) // some erc20 implementations do not cope with MaxUint256 well
     }
 
-    name = async (): Promise<BigNumber> => {
+    name = async (): Promise<string> => {
         return await this.contract.name()
     }
 
-    symbol = async (): Promise<BigNumber> => {
+    symbol = async (): Promise<string> => {
         return await this.contract.symbol()
     }
 
