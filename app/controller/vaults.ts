@@ -5,31 +5,15 @@ import { VaultsService } from '../service/vaults';
 
 export class VaultsController extends VaultsService {
   constructor(vaults: Model<any>) {
-    super(vaults);
+    super(vaults)
   }
 
   /**
-   * hello
-   * @param {*} event
-   */
-  async hello() {
-    // const id: number = event.pathParameters.id;
-    try {
-      const result = await this.helloByNothing();
-      return MessageUtil.success(result);
-    } catch (err) {
-      console.error(err);
-
-      return MessageUtil.error(err.code, err.message);
-    }
-  }
-
-  /**
-  * Get all vaults
+  * Test
   */
-  async find() {
+  async test() {
     try {
-      const result = await this.findVaults();
+      const result = { state: true }
       return MessageUtil.success(result);
     } catch (err) {
       console.error(err);
@@ -37,6 +21,19 @@ export class VaultsController extends VaultsService {
       return MessageUtil.error(err.code, err.message);
     }
   }
+
+  async updateVaults() {
+    try {
+      const result = await this.updateAllVaults()
+      return MessageUtil.success(result);
+    } catch (err) {
+      console.error(err);
+
+      return MessageUtil.error(err.code, err.message);
+    }
+
+  }
+
 
   /**
     * Query vault by id

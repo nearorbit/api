@@ -6,10 +6,31 @@ const dotenvPath = path.join(__dirname, '../', `config/.env.${process.env.NODE_E
 dotenv.config({
   path: dotenvPath,
 });
-
-import { vaults } from './model';
+import { baseModel } from './model';
 import { VaultsController } from './controller/vaults';
-const vaultsController = new VaultsController(vaults)
+const vaultsController = new VaultsController(baseModel)
+
+
+
+export const findVaults: Handler = () => vaultsController.updateVaults();
+export const findOneVault: Handler = () => vaultsController.test();
+
+export const findPools: Handler = () => vaultsController.test();
+export const findOnePool: Handler = () => vaultsController.test();
+
+export const updateVaults: Handler = () => vaultsController.test();
+export const updatePools: Handler = () => vaultsController.test();
+
+
+
+
+
+
+
+
+
+
+
 
 // import { books } from './model';
 // import { BooksController } from './controller/books';
@@ -20,14 +41,10 @@ const vaultsController = new VaultsController(vaults)
 // };
 
 // export const update: Handler = (event: any) => booksController.update(event);
-
-export const find: Handler = () => vaultsController.find();
-
 // export const findOne: Handler = (event: any, context: Context) => {
 //   return booksController.findOne(event, context);
 // };
 
 // export const deleteOne: Handler = (event: any) => booksController.deleteOne(event);
 
-export const hello: Handler = () => vaultsController.hello();
-
+// export const hello: Handler = () => vaultsController.hello();

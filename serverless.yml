@@ -10,7 +10,7 @@ provider:
     # DB_BOOKS_COLLECTION: ${DB_BOOKS_COLLECTION}
 
 plugins:
-  - serverless-plugin-typescript 
+  - serverless-plugin-typescript
   - serverless-offline
 
 package:
@@ -21,6 +21,12 @@ package:
     - config/.env.dev
 
 functions:
+  find:
+    handler: app/handler.findVaults
+    events:
+      - http:
+          path: vaults
+          method: get
   # create:
   #   handler: app/handler.create
   #   events:
@@ -46,15 +52,3 @@ functions:
   #     - http:
   #         path: books/{id}
   #         method: delete
-  hello:
-    handler: app/handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-  find:
-    handler: app/handler.find
-    events:
-      - http:
-          path: vaults
-          method: get

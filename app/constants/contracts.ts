@@ -4,14 +4,15 @@
  * Core Contracts
  */
 
-export const CONTROLLER = ''
-export const INTEGRATION_REGISTRY = ''
-export const BASIC_ISSUANCE = ''
-export const STREAMING_FEE = ''
-export const GENERAL_INDEX = ''
+export const CONTROLLER = '0x5636444570D6308963b05354C39f8174a9710EdA'
+export const INTEGRATION_REGISTRY = '0x1d0245fbc366c9bB23b57483cccd44D6cDEe7461'
+export const BASIC_ISSUANCE = '0x1Aa35A9c1e942A9bf8f9C83Adb36b83355Fef5b0'
+export const STREAMING_FEE = '0xEa6fFFd7e4ea0b07C10C85d87D392Ef76C0A2A24'
+export const GENERAL_INDEX = '0x4970C5b5420BdE396c63607927bd6F6cEbE26f21'
 
 
 /**
 * Periphery Contracts
 */
 export const EXCHANGE_ISSUANCEV2 = ''
+export const NAV_CALCULATOR = '0x22914c3c46649e40480442b065859fb0857bb247'
