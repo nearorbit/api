@@ -7,7 +7,8 @@ const erc20Abi = [
     'function balanceOf(address marketMaker) external view returns (uint256)',
     'function totalSupply() public view returns (uint256)',
     'function name() public view returns (string memory)',
-    'function symbol() public view returns (string memory)'
+    'function symbol() public view returns (string memory)',
+    'function getComponents() external view returns (address[] memory)'
 ]
 
 export class ERC20Service {
@@ -46,5 +47,9 @@ export class ERC20Service {
 
     totalSupply = async (): Promise<BigNumber> => {
         return await this.contract.totalSupply()
+    }
+
+    getComponents = async (): Promise<string[]> => {
+        return await this.contract.getComponents()
     }
 }

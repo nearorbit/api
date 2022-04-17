@@ -1,5 +1,5 @@
-import { BigNumber as BN } from 'bignumber.js'
-import { ethers } from 'ethers';
+// import { BigNumber as BN } from 'bignumber.js'
+// import { ethers } from 'ethers';
 // constants
 import { AURORA_PROVIDER } from '../constants/config/aurora.config'
 import { NAV_CALCULATOR, CONTROLLER } from '../constants/contracts';
@@ -7,7 +7,7 @@ import { WHITELIST } from "../constants/whitelist"
 
 //utils
 import { intersection, cFormatter } from '../utils/array';
-import { put, VaultItem, uid, getDataMapper, VaultObject } from '../model'
+import { uid, getDataMapper, VaultObject } from '../model'
 
 // services
 import { ERC20Service } from './erc20'
@@ -21,9 +21,24 @@ const date = new Date();
 
 export class VaultsService {
 
-  protected async findAllVaults() {
+  protected async findVaultById(id: string) {
+    const mapper = getDataMapper();
     try {
-      const mapper = getDataMapper();
+      for await (const item of mapper.query(VaultObject,
+        { address: id },
+        { limit: 1, scanIndexForward: false },
+      )) {
+        return item
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  protected async findAllVaults() {
+    const mapper = getDataMapper();
+    try {
       for await (const item of mapper.query(VaultObject,
         { address: WHITELIST[0] },
         { limit: 1, scanIndexForward: false },
@@ -34,7 +49,6 @@ export class VaultsService {
     } catch (err) {
       console.error(err);
     }
-    // return { status: true }
   }
 
 
@@ -47,6 +61,7 @@ export class VaultsService {
         const erc20Service = new ERC20Service(AURORA_PROVIDER, set)
         const name = await erc20Service.name()
         const symbol = await erc20Service.symbol()
+        const components = await erc20Service.getComponents()
         const rawTotalSupply = await erc20Service.totalSupply()
         const rawNav = await navService.getNav(set)
         const rawMcap = rawTotalSupply.mul(rawNav)
@@ -58,6 +73,7 @@ export class VaultsService {
           createdAt: date.getTime(),
           name,
           symbol,
+          components,
           totalSupply,
           nav,
           mcap,

@@ -5,7 +5,7 @@ import {
     table,
 } from '@aws/dynamodb-data-mapper-annotations';
 
-@table('aurora-db')
+@table(`vaults-${process.env.STAGE}`)
 export class VaultObject {
     @hashKey()
     address: string;
@@ -18,6 +18,9 @@ export class VaultObject {
 
     @attribute()
     symbol: string
+
+    @attribute()
+    components: string[]
 
     @attribute()
     totalSupply: number

@@ -1,12 +1,13 @@
 {
-  "name": "aws-node-rest-api-typescript",
+  "name": "orbit-api-v1",
   "version": "1.0.0",
-  "description": "This is simple REST API example for AWS Lambda By Serverless framwork with TypeScript and MongoDB Atlas.",
+  "description": "Simple REST APIusing AWS Lambda, Dynamodb and Serverless framework.",
   "main": "index.js",
   "scripts": {
     "lint": "tslint -p tsconfig.json -c tslint.json",
-    "local": "serverless offline",
-    "deploy": "serverless deploy",
+    "dev": "sls offline start",
+    "deploy": "serverless deploy --stage staging",
+    "deploy:prod": "sls deploy --stage prod",
     "test": "cross-env NODE_ENV=dev mocha -r ts-node/register tests/*.test.ts --exit",
     "coverage": "nyc --reporter lcov npm run test"
   },
@@ -53,10 +54,10 @@
     "Nodejs",
     "TypeScript",
     "ServerLess",
-    "MongoDB Atlas",
+    "DynamoDB",
     "AWS Lambda"
   ],
-  "author": "May",
+  "author": "cowboy",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Q-Angelo/aws-node-typescript-rest-api/issues"
