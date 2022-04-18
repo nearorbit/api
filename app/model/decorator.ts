@@ -1,36 +1,36 @@
 import {
-    attribute,
-    hashKey,
-    rangeKey,
-    table,
-} from '@aws/dynamodb-data-mapper-annotations';
+  attribute,
+  hashKey,
+  rangeKey,
+  table,
+} from "@aws/dynamodb-data-mapper-annotations";
 
 @table(`vaults-${process.env.STAGE}`)
 export class VaultObject {
-    @hashKey()
-    address: string;
+  @hashKey()
+  address: string;
 
-    @rangeKey()
-    createdAt: number;
+  @rangeKey({ defaultProvider: () => Date.now() })
+  createdAt: number;
 
-    @attribute()
-    name: string
+  @attribute()
+  name: string;
 
-    @attribute()
-    symbol: string
+  @attribute()
+  symbol: string;
 
-    @attribute()
-    components: string[]
+  @attribute()
+  components: string[];
 
-    @attribute()
-    totalSupply: number
+  @attribute()
+  totalSupply: number;
 
-    @attribute()
-    nav: number
+  @attribute()
+  nav: number;
 
-    @attribute()
-    mcap: number
+  @attribute()
+  mcap: number;
 
-    @attribute()
-    uid: String
+  @attribute()
+  uid: String;
 }

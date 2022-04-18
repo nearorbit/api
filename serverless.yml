@@ -67,6 +67,12 @@ resources:
             AttributeType: "N"
 
 functions:
+  test:
+    handler: app/handler.test
+    events:
+      - http:
+          path: test
+          method: get
   findVaults:
     handler: app/handler.findVaults
     events:
@@ -85,3 +91,8 @@ functions:
       - http:
           path: update/vaults
           method: get
+      - schedule:
+          name: ${self:service}-${self:custom.stage}-update-vaults-history
+          description: "update historical data for all vaults"
+          rate: rate(1 minute)
+          enabled: true

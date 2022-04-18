@@ -1,5 +1,13 @@
-import { ResponseVO } from '../model/vo/responseVo';
+export class ResponseBodyVO {
+  code: number;
+  message: string;
+  data?: object;
+}
 
+export class ResponseVO {
+  statusCode: number;
+  body: string;
+}
 enum StatusCode {
   success = 200,
 }
@@ -20,7 +28,7 @@ class Result {
   /**
    * Serverless: According to the API Gateway specs, the body content must be stringified
    */
-  bodyToString () {
+  bodyToString() {
     return {
       statusCode: this.statusCode,
       body: JSON.stringify({
