@@ -50,24 +50,3 @@ export class VaultsController extends VaultsService {
     }
   }
 
-  /**
-   * Test
-   */
-  async test(event: any, context: Context) {
-    console.log("memoryLimitInMB: ", context.memoryLimitInMB);
-    const params: any = event.queryStringParameters;
-
-    try {
-      const result = await this.testOnce(
-        params.address,
-        params.start,
-        params.end
-      );
-      return MessageUtil.success(result);
-    } catch (err) {
-      console.error(err);
-
-      return MessageUtil.error(err.code, err.message);
-    }
-  }
-}

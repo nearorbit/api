@@ -5,12 +5,12 @@ import {
   table,
 } from "@aws/dynamodb-data-mapper-annotations";
 
-@table(`vaults-${process.env.STAGE}`)
+@table(`${process.env.STAGE}-vaults`)
 export class VaultObject {
   @hashKey()
   address: string;
 
-  @rangeKey({ defaultProvider: () => Date.now() })
+  @attribute({ defaultProvider: () => Date.now() })
   createdAt: number;
 
   @attribute()
@@ -21,6 +21,30 @@ export class VaultObject {
 
   @attribute()
   components: string[];
+
+  @attribute()
+  totalSupply: number;
+
+  @attribute()
+  nav: number;
+
+  @attribute()
+  mcap: number;
+
+  @attribute()
+  apr: number;
+
+  @attribute()
+  uid: String;
+}
+
+@table(`${process.env.STAGE}-charts`)
+export class ChartObject {
+  @hashKey()
+  address: string;
+
+  @rangeKey({ defaultProvider: () => Date.now() })
+  createdAt: number;
 
   @attribute()
   totalSupply: number;

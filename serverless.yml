@@ -21,7 +21,8 @@ custom:
   serverless-offline:
     noPrependStageInUrl: true
   table:
-    VAULT_SNAPSHOTS_DATA: vaults-${self:custom.stage}
+    VAULT_SNAPSHOTS_DATA: ${self:custom.stage}-vaults
+    CHARTS_SNAPSHOTS_DATA: ${self:custom.stage}-charts
 
 package:
   exclude:
@@ -31,7 +32,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   memorySize: 2048
-  stage: dev
+  stage: staging
   region: us-east-1
   iam:
     role:
@@ -46,6 +47,7 @@ provider:
   environment:
     # Table definitions
     VAULT_SNAPSHOTS_DATA: ${self:custom.table.VAULT_SNAPSHOTS_DATA}
+    CHARTS_SNAPSHOTS_DATA: ${self:custom.table.CHARTS_SNAPSHOTS_DATA}
     STAGE: ${self:custom.stage}
 
 resources:
@@ -54,6 +56,17 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.table.VAULT_SNAPSHOTS_DATA}
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: "address"
+            KeyType: "HASH"
+        AttributeDefinitions:
+          - AttributeName: "address"
+            AttributeType: "S"
+    chartsSnapshotsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.table.CHARTS_SNAPSHOTS_DATA}
         BillingMode: PAY_PER_REQUEST
         KeySchema:
           - AttributeName: "address"
@@ -67,24 +80,34 @@ resources:
             AttributeType: "N"
 
 functions:
-  test:
-    handler: app/handler.test
-    events:
-      - http:
-          path: test
-          method: get
   findVaults:
     handler: app/handler.findVaults
     events:
       - http:
           path: vaults
           method: get
+          cors: true
   findOneVault:
     handler: app/handler.findOneVault
     events:
       - http:
           path: vaults/{id}
           method: get
+          cors: true
+  findPools:
+    handler: app/handler.findPools
+    events:
+      - http:
+          path: pools
+          method: get
+          cors: true
+  findOneChart:
+    handler: app/handler.findOneChart
+    events:
+      - http:
+          path: charts
+          method: get
+          cors: true
   updateVaults:
     handler: app/handler.updateVaults
     events:
@@ -94,5 +117,16 @@ functions:
       - schedule:
           name: ${self:service}-${self:custom.stage}-update-vaults-history
           description: "update historical data for all vaults"
+          rate: rate(5 minutes)
+          enabled: true
+  updateCharts:
+    handler: app/handler.updateCharts
+    events:
+      - http:
+          path: update/charts
+          method: get
+      - schedule:
+          name: ${self:service}-${self:custom.stage}-update-charts-history
+          description: "update historical data for all charts"
           rate: rate(1 minute)
           enabled: true

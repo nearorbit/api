@@ -1,4 +1,4 @@
-import { between, lessThanOrEqualTo } from "@aws/dynamodb-expressions";
+import { between } from "@aws/dynamodb-expressions";
 
 // constants
 import { AURORA_PROVIDER } from "../constants/config/aurora.config";
@@ -6,7 +6,7 @@ import { NAV_CALCULATOR, CONTROLLER } from "../constants/contracts";
 import { WHITELIST } from "../constants/whitelist";
 //utils
 import { intersection, cFormatter } from "../utils/array";
-import { uid, getDataMapper, VaultObject } from "../model";
+import { uid, getDataMapper, VaultObject, ChartObject } from "../model";
 // services
 import { ERC20Service } from "./erc20";
 import { NavService } from "./nav";
@@ -15,49 +15,29 @@ import { ControllerService } from "./controller";
 const navService = new NavService(AURORA_PROVIDER, NAV_CALCULATOR);
 const controllerService = new ControllerService(AURORA_PROVIDER, CONTROLLER);
 
-export class VaultsService {
-  protected async findVaultById(id: string) {
+export class ChartsService {
+  protected async findChartById(vault: string, start: number, end: number) {
+    const snapshots = [];
     const mapper = getDataMapper();
     try {
-      for await (const item of mapper.query(
-        VaultObject,
-        { address: id.toLowerCase() },
-        { limit: 1, scanIndexForward: false }
-      )) {
-        return item;
-      }
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-
-  protected async findAllVaults() {
-    const mapper = getDataMapper();
-    const tokensToGet = WHITELIST.map((addr) =>
-      Object.assign(
-        new VaultObject(),
+      for await (const snapshot of mapper.query(
+        ChartObject,
         {
-          address: addr,
+          address: vault,
+          createdAt: between(Number(start), Number(end)),
         },
-        { limit: 1, scanIndexForward: false }
-      )
-    );
-
-    const tokensInfo: any[] = [];
-
-    try {
-      for await (const token of mapper.batchGet(tokensToGet)) {
-        tokensInfo.push(token);
+        { scanIndexForward: false }
+      )) {
+        snapshots.push(snapshot);
       }
+      return snapshots;
     } catch (err) {
       console.error(err);
-      throw err;
+      return [];
     }
-    return tokensInfo;
   }
 
-  protected async updateAllVaults() {
+  protected async updateAllCharts() {
     const sets = await controllerService.getSets();
     const tokens = intersection(
       sets.map((x) => x.toLowerCase()),
@@ -69,29 +49,21 @@ export class VaultsService {
       await Promise.all(
         tokens.map(async (set: string) => {
           const erc20Service = new ERC20Service(AURORA_PROVIDER, set);
-          const name = await erc20Service.name();
-          const symbol = await erc20Service.symbol();
-          const components = await erc20Service.getComponents();
           const rawTotalSupply = await erc20Service.totalSupply();
           const rawNav = await navService.getNav(set);
           const rawMcap = rawTotalSupply.mul(rawNav);
           const totalSupply = Number(rawTotalSupply);
           const nav = Number(rawNav);
           const mcap = Number(rawMcap);
-          const apr = Number(0);
-          const newVault = {
+          const newChart = {
             address: cFormatter(set),
-            name,
-            symbol,
-            components,
             totalSupply,
             nav,
             mcap,
-            apr,
             uid,
           };
           const result = await mapper.put(
-            Object.assign(new VaultObject(), newVault)
+            Object.assign(new ChartObject(), newChart)
           );
           obj.push(result);
         })
