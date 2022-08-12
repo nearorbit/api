@@ -6,7 +6,7 @@ import { NAV_CALCULATOR, CONTROLLER } from "../constants/contracts";
 import { WHITELIST } from "../constants/whitelist";
 //utils
 import { intersection, cFormatter } from "../utils/array";
-import { uid, getDataMapper, VaultObject, ChartObject } from "../model";
+import { uid, getDataMapper, ChartObject } from "../model";
 // services
 import { ERC20Service } from "./erc20";
 import { NavService } from "./nav";
